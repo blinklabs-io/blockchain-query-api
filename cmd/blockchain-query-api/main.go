@@ -28,5 +28,10 @@ func main() {
 	}
 
 	// Start API listener
-	api.Start(config)
+	if err := api.Start(config); err != nil {
+		log.Fatalf("API listener failed: %s", err)
+	}
+
+	// We should never get here
+	log.Fatalf("listener exited unexpectedly without error")
 }
