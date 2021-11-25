@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Start(cfg *config.Config) {
+func Start(cfg *config.Config) error {
 	// Disable gin debug output
 	gin.SetMode(gin.ReleaseMode)
 
@@ -22,7 +22,8 @@ func Start(cfg *config.Config) {
 	v1.ConfigureRoutes(routerGroupV1)
 
 	// Start listener
-	router.Run(fmt.Sprintf("%s:%d", cfg.Api.Address, cfg.Api.Port))
+	err := router.Run(fmt.Sprintf("%s:%d", cfg.Api.Address, cfg.Api.Port))
+	return err
 }
 
 func HandlePing(c *gin.Context) {

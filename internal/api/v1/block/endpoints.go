@@ -1,4 +1,4 @@
-package v1
+package block
 
 import (
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
@@ -6,14 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ConfigureRoutesBlock(g *gin.RouterGroup) {
+func ConfigureRoutes(g *gin.RouterGroup) {
 	groupBlock := g.Group("/block")
 	groupBlock.GET("/:number", HandleGetBlock)
-}
-
-// URI params for GetBlock
-type GetBlockUriParams struct {
-	Number uint32 `uri:"number" binding:"required"`
 }
 
 func HandleGetBlock(c *gin.Context) {
@@ -26,7 +21,19 @@ func HandleGetBlock(c *gin.Context) {
 	// Retrieve block from DB
 	var block models.Block
 	db := cardano_db_sync.GetHandle()
-	db.Where(&models.Block{BlockNumber: uriParams.Number}).First(&block)
-	// TODO: create struct for API response and populate/return that
-	c.JSON(200, block)
+	result := db.Where(&models.Block{BlockNumber: uriParams.Number}).First(&block)
+	if result.Error != nil {
+		// Not found
+		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+			c.JSON(404, gin.H{"msg": "block not found"})
+			return
+		}
+		// Some other database error
+		// TODO: log this failure
+		c.JSON(500, gin.H{"msg": "unexpected error"})
+		return
+	}
+	// Create response from returned item
+	r := NewBlockResponse(&block)
+	c.JSON(200, r)
 }

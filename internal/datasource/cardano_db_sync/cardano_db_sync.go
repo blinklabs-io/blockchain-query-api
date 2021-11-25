@@ -1,6 +1,7 @@
 package cardano_db_sync
 
 import (
+	"errors"
 	"fmt"
 	"github.com/cloudstruct/blockchain-query-api/internal/config"
 	"gorm.io/driver/postgres"
@@ -44,4 +45,8 @@ func (c *CardanoDbSync) Connect() error {
 
 func GetHandle() *gorm.DB {
 	return cardanoDbSync.db
+}
+
+func IsRecordNotFoundError(err error) bool {
+	return errors.Is(err, gorm.ErrRecordNotFound)
 }
