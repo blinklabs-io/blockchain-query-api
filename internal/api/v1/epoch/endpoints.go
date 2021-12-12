@@ -1,5 +1,4 @@
-// TODO: migrate this to subdir like 'block'
-package v1
+package epoch
 
 import (
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
@@ -7,18 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ConfigureRoutesEpoch(g *gin.RouterGroup) {
+func ConfigureRoutes(g *gin.RouterGroup) {
 	groupEpoch := g.Group("/epoch")
 	groupEpoch.GET("/:number", HandleGetEpoch)
 }
 
-// URI params for GetEpoch
-type GetEpochUriParams struct {
-	Number uint32 `uri:"number" binding:"required"`
-}
-
-// XXX: this doesn't actually do anything useful since the underlying 'epoch'
-// table in the DB is empty
 func HandleGetEpoch(c *gin.Context) {
 	var uriParams GetEpochUriParams
 	if err := c.ShouldBindUri(&uriParams); err != nil {
@@ -29,7 +21,19 @@ func HandleGetEpoch(c *gin.Context) {
 	// Retrieve epoch from DB
 	var epoch models.Epoch
 	db := cardano_db_sync.GetHandle()
-	db.Where(&models.Epoch{EpochNumber: uriParams.Number}).First(&epoch)
-	// TODO: create struct for API response and populate/return that
-	c.JSON(200, epoch)
+	result := db.Where(&models.Epoch{EpochNumber: uriParams.Number}).First(&epoch)
+	if result.Error != nil {
+		// Not found
+		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+			c.JSON(404, gin.H{"msg": "epoch not found"})
+			return
+		}
+		// Some other database error
+		// TODO: log this failure
+		c.JSON(500, gin.H{"msg": "unexpected error"})
+		return
+	}
+	// Create response from returned item
+	r := NewEpochResponse(&epoch)
+	c.JSON(200, r)
 }
