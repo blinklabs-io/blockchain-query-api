@@ -35,7 +35,10 @@ func (c *CardanoDbSync) Connect() error {
 		c.cfg.DbName,
 		c.cfg.SslMode,
 	)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true, // disables implicit prepared statement usage
+	}), &gorm.Config{})
 	if err != nil {
 		return err
 	}
