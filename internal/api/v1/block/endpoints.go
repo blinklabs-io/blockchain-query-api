@@ -9,6 +9,8 @@ import (
 func ConfigureRoutes(g *gin.RouterGroup) {
 	groupBlock := g.Group("/block")
 	groupBlock.GET("/:number", HandleGetBlock)
+	groupBlock.GET("/current", HandleGetBlockLatest)
+	groupBlock.GET("/latest", HandleGetBlockLatest)
 }
 
 func HandleGetBlock(c *gin.Context) {
@@ -22,6 +24,28 @@ func HandleGetBlock(c *gin.Context) {
 	var block models.Block
 	db := cardano_db_sync.GetHandle()
 	result := db.Where(&models.Block{BlockNumber: uriParams.Number}).First(&block)
+	if result.Error != nil {
+		// Not found
+		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+			c.JSON(404, gin.H{"msg": "block not found"})
+			return
+		}
+		// Some other database error
+		// TODO: log this failure
+		c.JSON(500, gin.H{"msg": "unexpected error"})
+		return
+	}
+	// Create response from returned item
+	r := NewBlockResponse(&block)
+	c.JSON(200, r)
+}
+
+func HandleGetBlockLatest(c *gin.Context) {
+	// Retrieve block from DB
+	var block models.Block
+	db := cardano_db_sync.GetHandle()
+	latestBlockQuery := db.Select("max(block_no)").Table("block")
+	result := db.Where("block_no = (?)", latestBlockQuery).Find(&block)
 	if result.Error != nil {
 		// Not found
 		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
