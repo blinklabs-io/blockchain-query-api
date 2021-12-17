@@ -11,7 +11,7 @@ type PoolUpdate struct {
 	MetaId            int64   `gorm:"column:meta_id"` // pool_metadata_ref(id)
 	Margin            float32 `gorm:"column:margin"`
 	FixedCost         uint64  `gorm:"column:fixed_cost"`       // This is a "lovelace" column
-	RegisterdTxId     int64   `gorm:"column:registered_tx_id"` // tx(id)
+	RegisteredTxId    int64   `gorm:"column:registered_tx_id"` // tx(id)
 }
 
 // Override default pluralized table name
