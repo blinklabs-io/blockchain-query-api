@@ -9,6 +9,8 @@ import (
 func ConfigureRoutes(g *gin.RouterGroup) {
 	groupEpoch := g.Group("/epoch")
 	groupEpoch.GET("/:number", HandleGetEpoch)
+	groupEpoch.GET("/current", HandleGetEpochLatest)
+	groupEpoch.GET("/latest", HandleGetEpochLatest)
 }
 
 func HandleGetEpoch(c *gin.Context) {
@@ -22,6 +24,28 @@ func HandleGetEpoch(c *gin.Context) {
 	var epoch models.Epoch
 	db := cardano_db_sync.GetHandle()
 	result := db.Where(&models.Epoch{EpochNumber: uriParams.Number}).First(&epoch)
+	if result.Error != nil {
+		// Not found
+		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+			c.JSON(404, gin.H{"msg": "epoch not found"})
+			return
+		}
+		// Some other database error
+		// TODO: log this failure
+		c.JSON(500, gin.H{"msg": "unexpected error"})
+		return
+	}
+	// Create response from returned item
+	r := NewEpochResponse(&epoch)
+	c.JSON(200, r)
+}
+
+func HandleGetEpochLatest(c *gin.Context) {
+	// Retrieve epoch from DB
+	var epoch models.Epoch
+	db := cardano_db_sync.GetHandle()
+	latestEpochQuery := db.Select("max(no)").Table("epoch")
+	result := db.Where("no = (?)", latestEpochQuery).Find(&epoch)
 	if result.Error != nil {
 		// Not found
 		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
