@@ -12,7 +12,7 @@ type Block struct {
 	EpochSlotNumber uint32     `gorm:"column:epoch_slot_no"`
 	BlockNumber     uint32     `gorm:"column:block_no"`
 	PreviousID      int64      `gorm:"column:previous_id"`
-	SlotLeaderID    int64      `gorm:"column:slot_leader_id"`
+	SlotLeaderID    int64      `gorm:"column:slot_leader_id"` // slot_leader(id)
 	Size            uint32     `gorm:"column:size"`
 	Time            *time.Time `gorm:"column:time"`
 	TxCount         int64      `gorm:"column:tx_count"`
