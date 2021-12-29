@@ -3,7 +3,7 @@ package models
 type PoolUpdate struct {
 	Id            int64   `gorm:"column:id"`
 	HashId        int64   `gorm:"column:hash_id"` // pool_hash(id)
-	CertIndex     int64   `gorm:"column:cert_index"`
+	CertIndex     int32   `gorm:"column:cert_index"`
 	VrfKeyHash    []byte  `gorm:"column:vrf_key_hash"` // This is a "hash32type" column
 	Pledge        uint64  `gorm:"column:pledge"`       // This is a "lovelace" column
 	RewardAddr    string  `gorm:"column:reward_addr"`  // This is a "addr29type" column
