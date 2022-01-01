@@ -15,6 +15,10 @@ type EpochResponse struct {
 	EndTime     *time.Time `json:"end_time"`
 }
 
+type EpochStakeResponse struct {
+	Amount uint64 `json:"amount"`
+}
+
 func NewEpochResponse(e *models.Epoch) *EpochResponse {
 	r := &EpochResponse{
 		OutSum:      e.OutSum,
@@ -24,6 +28,13 @@ func NewEpochResponse(e *models.Epoch) *EpochResponse {
 		EpochNumber: e.EpochNumber,
 		StartTime:   e.StartTime,
 		EndTime:     e.EndTime,
+	}
+	return r
+}
+
+func NewEpochStakeResponse(e *StakeAmount) *EpochStakeResponse {
+	r := &EpochStakeResponse{
+		Amount: e.Amount,
 	}
 	return r
 }
