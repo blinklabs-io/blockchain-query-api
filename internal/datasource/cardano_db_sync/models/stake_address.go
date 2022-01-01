@@ -1,11 +1,11 @@
 package models
 
 type StakeAddress struct {
-	Id            int64  `gorm:"column:id"`
-	HashRaw       []byte `gorm:"column:hash_raw"` // This is a "addr29type" column
-	View          string `gorm:"column:view"`
-	ScriptHash    []byte `gorm:"column:script_hash"`      // This is a "hash28type" column
-	RegisterdTxId int64  `gorm:"column:registered_tx_id"` // tx(id)
+	Id             int64  `gorm:"column:id"`
+	HashRaw        []byte `gorm:"column:hash_raw"` // This is a "addr29type" column
+	View           string `gorm:"column:view"`
+	ScriptHash     []byte `gorm:"column:script_hash"`      // This is a "hash28type" column
+	RegisteredTxId int64  `gorm:"column:registered_tx_id"` // tx(id)
 }
 
 // Override default pluralized table name
