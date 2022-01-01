@@ -26,11 +26,11 @@ type EpochParam struct {
 	CostModelId         int64   `gorm:"column:cost_model_id"`       // cost_model(id)
 	PriceMem            float32 `gorm:"column:price_mem"`
 	PriceStep           float32 `gorm:"column:price_step"`
-	MaxTxExMem          string  `gorm:"column:max_tx_ex_mem"`      // This is a "word63type" column
-	MaxTxExSteps        string  `gorm:"column:max_tx_ex_steps"`    // This is a "word63type" column
-	MaxBlockExMem       string  `gorm:"column:max_block_ex_mem"`   // This is a "word63type" column
-	MaxBlockExSteps     string  `gorm:"column:max_block_ex_steps"` // This is a "word63type" column
-	MaxValSize          string  `gorm:"column:max_val_size"`       // This is a "word63type" column
+	MaxTxExMem          string  `gorm:"column:max_tx_ex_mem"`      // This is a "word64type" column
+	MaxTxExSteps        string  `gorm:"column:max_tx_ex_steps"`    // This is a "word64type" column
+	MaxBlockExMem       string  `gorm:"column:max_block_ex_mem"`   // This is a "word64type" column
+	MaxBlockExSteps     string  `gorm:"column:max_block_ex_steps"` // This is a "word64type" column
+	MaxValSize          string  `gorm:"column:max_val_size"`       // This is a "word64type" column
 	CollateralPercent   uint32  `gorm:"column:collateral_percent"`
 	MaxCollateralInputs uint32  `gorm:"column:max_collateral_inputs"`
 	BlockId             int64   `gorm:column:block_id"` // block(id)
