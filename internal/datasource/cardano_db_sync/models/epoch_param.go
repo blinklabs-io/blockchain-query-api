@@ -33,7 +33,7 @@ type EpochParam struct {
 	MaxValSize          string  `gorm:"column:max_val_size"`       // This is a "word64type" column
 	CollateralPercent   uint32  `gorm:"column:collateral_percent"`
 	MaxCollateralInputs uint32  `gorm:"column:max_collateral_inputs"`
-	BlockId             int64   `gorm:column:block_id"` // block(id)
+	BlockId             int64   `gorm:"column:block_id"` // block(id)
 }
 
 // Override default pluralized table name
