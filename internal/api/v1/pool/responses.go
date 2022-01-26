@@ -5,7 +5,7 @@ import (
 )
 
 type PoolResponse struct {
-	HashId         int64   `json:"hash_id"`
+	Address        string  `json:"address"`
 	CertIndex      int32   `json:"cert_index"`
 	VrfKeyHash     []byte  `json:"vrf_key"`
 	Pledge         uint64  `json:"pledge"`
@@ -16,9 +16,9 @@ type PoolResponse struct {
 }
 
 // Build response object from DB model
-func NewPoolResponse(p *models.PoolUpdate) *PoolResponse {
+func NewPoolResponse(p *models.PoolUpdate, n string) *PoolResponse {
 	r := &PoolResponse{
-		HashId:         p.HashId,
+		Address:        n,
 		CertIndex:      p.CertIndex,
 		VrfKeyHash:     p.VrfKeyHash,
 		Pledge:         p.Pledge,
