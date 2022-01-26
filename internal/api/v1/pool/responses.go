@@ -5,7 +5,7 @@ import (
 )
 
 type PoolResponse struct {
-	Address        string  `json:"address"`
+	Address        string  `json:"pool_id"`
 	CertIndex      int32   `json:"cert_index"`
 	VrfKeyHash     []byte  `json:"vrf_key"`
 	Pledge         uint64  `json:"pledge"`
