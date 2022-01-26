@@ -61,9 +61,5 @@ func HandleGetPoolList(c *gin.Context) {
 		return
 	}
 	// Create response from returned item
-	var r []*string
-	for _, v := range pools {
-		r = append(r, v)
-	}
 	c.JSON(200, pools)
 }
