@@ -33,5 +33,5 @@ $ DATASOURCE_CARDANODBSYNC_USERNAME=postgres DATASOURCE_CARDANODBSYNC_PASSWORD=x
 Perform a request.
 
 ```
-$ curl -s http://localhost:8080/v1/block/xxxxxxxx | jq .
+$ curl -s http://localhost:8080/v0/block/xxxxxxxx | jq .
 ```
