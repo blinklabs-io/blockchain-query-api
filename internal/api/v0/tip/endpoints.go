@@ -11,18 +11,18 @@ func ConfigureRoutes(g *gin.RouterGroup) {
 }
 
 type Tip struct {
-	Hash            []byte
-	EpochNumber     uint16
-	SlotNumber      uint32
-	EpochSlotNumber uint32
-	BlockNumber     uint32
-	Time            *time.Time
+	Hash            []byte     `gorm:"column:hash"`
+	EpochNumber     uint16     `gorm:"column:epoch_no"`
+	SlotNumber      uint32     `gorm:"column:slot_no"`
+	EpochSlotNumber uint32     `gorm:"column:epoch_slot_no"`
+	BlockNumber     uint32     `gorm:"column:block_no"`
+	Time            *time.Time `gorm:"column:time"`
 }
 
 func HandleGetTip(c *gin.Context) {
 	var tip Tip
 	db := cardano_db_sync.GetHandle()
-	result := db.Order("id desc").Limit(1).Select("hash, epoch_no, slot_no, epoch_slot_no, block_no, time").Table("block").Find(&tip)
+	result := db.Order("id desc").Limit(1).Table("block").Find(&tip)
 	if result.Error != nil {
 		// Not found
 		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
