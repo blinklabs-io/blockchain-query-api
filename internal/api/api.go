@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v1"
+	"github.com/cloudstruct/blockchain-query-api/internal/api/v0"
 	"github.com/cloudstruct/blockchain-query-api/internal/config"
 	"github.com/gin-gonic/gin"
 )
@@ -17,9 +17,10 @@ func Start(cfg *config.Config) error {
 	// Configure PING route
 	router.GET("/ping", HandlePing)
 
-	// Configure v1 routes
-	routerGroupV1 := router.Group("/v1")
-	v1.ConfigureRoutes(routerGroupV1)
+	// Configure api/v0 routes
+	apiGroup := router.Group("api")
+	routerGroupV0 := apiGroup.Group("/v0")
+	v0.ConfigureRoutes(routerGroupV0)
 
 	// Start listener
 	err := router.Run(fmt.Sprintf("%s:%d", cfg.Api.Address, cfg.Api.Port))
