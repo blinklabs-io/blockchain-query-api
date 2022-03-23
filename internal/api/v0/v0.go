@@ -1,6 +1,7 @@
 package v0
 
 import (
+	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/account"
 	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/block"
 	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/epoch"
 	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/meta"
@@ -10,6 +11,7 @@ import (
 )
 
 func ConfigureRoutes(g *gin.RouterGroup) {
+	account.ConfigureRoutes(g)
 	block.ConfigureRoutes(g)
 	epoch.ConfigureRoutes(g)
 	meta.ConfigureRoutes(g)
