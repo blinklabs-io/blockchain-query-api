@@ -17,6 +17,10 @@ type AccountResponse struct {
 	Treasury         string `json:"treasury"`
 }
 
+type AccountIdResponse struct {
+	Id string `json:"id"`
+}
+
 type AddressResponse struct {
 	Address string `json:"address"`
 }
@@ -58,6 +62,13 @@ func NewAccountResponse(a *Account) *AccountResponse {
 		RewardsAvailable: strconv.FormatUint(a.RewardsAvailable, 10),
 		Reserves:         strconv.FormatUint(a.Reserves, 10),
 		Treasury:         strconv.FormatUint(a.Treasury, 10),
+	}
+	return r
+}
+
+func NewAccountListResponse(a *AccountId) *AccountIdResponse {
+	r := &AccountIdResponse{
+		Id: a.Id,
 	}
 	return r
 }
