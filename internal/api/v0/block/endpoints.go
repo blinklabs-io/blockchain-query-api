@@ -83,8 +83,8 @@ func HandleGetBlockList(c *gin.Context) {
 		return
 	}
 	// Create response from returned item
-	var r []*BlockResponse
-        for _, v := range blocks {
+	r := []*BlockResponse{}
+	for _, v := range blocks {
 		r = append(r, NewBlockResponse(v))
 	}
 	c.JSON(200, r)
