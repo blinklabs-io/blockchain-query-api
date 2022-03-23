@@ -180,8 +180,8 @@ func HandleGetEpochList(c *gin.Context) {
 		return
 	}
 	// Create response from returned item
-	var r []*EpochResponse
-        for _, v := range epochs {
+	r := []*EpochResponse{}
+	for _, v := range epochs {
 		r = append(r, NewEpochResponse(v))
 	}
 	c.JSON(200, r)
