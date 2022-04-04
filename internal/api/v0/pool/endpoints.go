@@ -4,13 +4,79 @@ import (
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync/models"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 func ConfigureRoutes(g *gin.RouterGroup) {
-	g.GET("/pool", HandleGetPoolList)
-	groupPool := g.Group("/pool")
-	groupPool.GET("/:address", HandleGetPool)
+	// Blocks
+	g.GET("/pool_blocks", HandleGetPoolBlocks)
+	g.POST("/pool_blocks", HandleGetPoolBlocks)
+	// Delegators
+	g.GET("/pool_delegators", HandleGetPoolDelegators)
+	g.POST("/pool_delegators", HandleGetPoolDelegators)
+	// History
+	g.GET("/pool_history", HandleGetPoolHistory)
+	g.POST("/pool_history", HandleGetPoolHistory)
+	// Info
+	g.GET("/pool_info", HandleGetPoolInfo)
+	g.POST("/pool_info", HandleGetPoolInfo)
+	// List
+	g.GET("/pool_list", HandleGetPoolList)
+	// Metadata
+	g.GET("/pool_metadata", HandleGetPoolMetadata)
+	// Relays
+	g.GET("/pool_relays", HandleGetPoolRelays)
+	// Updates
+	g.GET("/pool_updates", HandleGetPoolUpdates)
+	g.POST("/pool_updates", HandleGetPoolUpdates)
 }
+
+type Block struct {
+	EpochNumber uint64     `gorm:"column:epoch_no"`
+	EpochSlot   uint64     `gorm:"column:epoch_slot"`
+	AbsSlot     uint64     `gorm:"column:abs_slot"`
+	BlockHeight uint64     `gorm:"column:block_height"`
+	BlockHash   []byte     `gorm:"column:block_hash"`
+	BlockTime   *time.Time `gorm:"column:block_time"`
+}
+
+type Delegator struct {
+	StakeAddress string  `gorm:"column:stake_address"`
+	TotalBalance float64 `gorm:"column:total_balance"`
+	EpochNumber  uint64  `gorm:"column:epoch_no"`
+}
+
+type History struct {
+	EpochNumber        uint64  `gorm:"column:epoch_no"`
+	ActiveStake        uint64  `gorm:"column:active_stake"`
+	ActiveStakePercent float32 `gorm:"column:active_stake_pct"`
+	SaturationPercent  float32 `gorm:"column:saturation_pct"`
+	BlockCount         uint64  `gorm:"column:block_cnt"`
+	DelegatorCount     uint64  `gorm:"column:delegator_cnt"`
+	Margin             float32 `gorm:"column:margin"`
+	FixedCost          uint64  `gorm:"column:fixed_cost"`
+	PoolFees           float32 `gorm:"column:pool_fees"`
+	DelegRewards       float64 `gorm:"column:deleg_rewards"`
+	EpochRos           float64 `gorm:"column:epoch_ros"`
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 func HandleGetPool(c *gin.Context) {
 	var uriParams GetPoolUriParams
