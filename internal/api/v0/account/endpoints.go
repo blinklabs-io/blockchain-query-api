@@ -2,6 +2,7 @@ package account
 
 import (
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
+	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"strconv"
@@ -21,6 +22,8 @@ func ConfigureRoutes(g *gin.RouterGroup) {
 	// Info
 	g.GET("/account_info", HandleGetAccountInfo)
 	g.POST("/account_info", HandleGetAccountInfo)
+	// List
+	g.GET("/account_list", HandleGetAccountList)
 	// Rewards
 	g.GET("/account_rewards", HandleGetAccountRewards)
 	g.POST("/account_rewards", HandleGetAccountRewards)
@@ -39,6 +42,10 @@ type Account struct {
 	RewardsAvailable uint64 `gorm:"column:rewards_available"`
 	Reserves         uint64 `gorm:"column:reserves"`
 	Treasury         uint64 `gorm:"column:treasury"`
+}
+
+type AccountId struct {
+	Id string `gorm:"id"`
 }
 
 type Address struct {
@@ -344,6 +351,33 @@ func HandleGetAccountInfo(c *gin.Context) {
 		for _, v := range accounts {
 			r = append(r, NewAccountResponse(v))
 		}
+	}
+	c.JSON(200, r)
+}
+
+func HandleGetAccountList(c *gin.Context) {
+	var accounts []*AccountId
+	var stakeAddress *models.StakeAddress
+	db := cardano_db_sync.GetHandle()
+	result := db.Debug().
+		Model(&stakeAddress).
+		Select("view AS id").
+		Find(&accounts)
+	if result.Error != nil {
+		// Not found
+		if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+			c.JSON(404, gin.H{"msg": "accounts not found"})
+			return
+		}
+		// Some other database error
+		// TODO: log this failure
+		c.JSON(500, gin.H{"msg": "unexpected error"})
+		return
+	}
+	// Create response from returned item
+	r := []*AccountIdResponse{}
+	for _, v := range accounts {
+		r = append(r, NewAccountListResponse(v))
 	}
 	c.JSON(200, r)
 }
