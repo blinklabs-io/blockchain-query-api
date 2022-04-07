@@ -60,24 +60,69 @@ type History struct {
 	EpochRos           float64 `gorm:"column:epoch_ros"`
 }
 
+type List struct {
+	PoolIdBech32 string `"gorm:"column:pool_id_bech32"`
+	Ticker       string `"gorm:"column:ticker"`
+}
 
+type Metadata struct {
+	PoolIdBech32 string `"gorm:"column:pool_id_bech32"`
+	MetaUrl      string `gorm:"column:meta_url"`
+	MetaHash     string `gorm:"column:meta_hash"`
+	MetaJson     jsonb  `gorm:"column:meta_json"`
+}
 
+type Pool struct {
+	PoolIdBech32      string  `"gorm:"column:pool_id_bech32"`
+	PoolIdHex         string  `"gorm:"column:pool_id_hex"`
+	ActiveEpochNumber int64   `gorm:"column:active_epoch_no"`
+	VrfHashKey        string  `gorm:"column:vrf_hash_key"`
+	Margin            float32 `gorm:"column:margin"`
+	FixedCost         uint64  `gorm:"column:fixed_cost"`
+	Pledge            uint64  `gorm:"column:pledge"`
+	RewardAddress     string  `gorm:"column:reward_address"`
+	Owners            string  `gorm:"column:owners"`
+	Relays            jsonb   `gorm:"column:relays"`
+	MetaUrl           string  `gorm:"column:meta_url"`
+	MetaHash          string  `gorm:"column:meta_hash"`
+	MetaJson          jsonb   `gorm:"column:meta_json"`
+	PoolStatus        string  `gorm:"column:pool_status"`
+	RetiringEpoch     uint64  `gorm:"column:retiring_epoch"`
+	OpCert            string  `gorm:"column:op_cert"`
+	OpCertCounter     uint32  `gorm:"column:op_cert_counter"`
+	ActiveStake       uint64  `gorm:"column:active_stake"`
+	BlockCount        float32 `gorm:"column:block_count"`
+	LivePledge        float32 `gorm:"column:live_pledge"`
+	LiveStake         uint64  `gorm:"column:live_stake"`
+	LiveDelegators    int64   `gorm:"column:live_delegators"`
+	LiveSaturation    float32 `gorm:"column:live_saturation"`
+}
 
+type Relays struct {
+	PoolIdBech32      string  `"gorm:"column:pool_id_bech32"`
+	Relays            jsonb   `gorm:"column:relays"`
+}
 
+type Updates struct {
+	TxHash            string     `gorm:"column:tx_hash"`
+	BlockTime         *time.Time `gorm:"column:block_time"`
+	PoolIdBech32      string     `gorm:"column:pool_id_bech32"`
+	PoolIdHex         string     `gorm:"column:pool_id_hex"`
+	ActiveEpochNumber int64      `gorm:"column:active_epoch_no"`
+	VrfHashKey        string     `gorm:"column:vrf_hash_key"`
+	Margin            float32    `gorm:"column:margin"`
+	FixedCost         uint64     `gorm:"column:fixed_cost"`
+	Pledge            uint64     `gorm:"column:pledge"`
+	RewardAddress     string     `gorm:"column:reward_address"`
+	Owners            string     `gorm:"column:owners"`
+	Relays            jsonb      `gorm:"column:relays"`
+	MetaUrl           string     `gorm:"column:meta_url"`
+	MetaHash          string     `gorm:"column:meta_hash"`
+	PoolStatus        string     `gorm:"column:pool_status"`
+	RetiringEpoch     uint64     `gorm:"column:retiring_epoch"`
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// TODO: implement handlers
 func HandleGetPool(c *gin.Context) {
 	var uriParams GetPoolUriParams
 	if err := c.ShouldBindUri(&uriParams); err != nil {
