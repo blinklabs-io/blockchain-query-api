@@ -1,31 +1,27 @@
 package pool
 
 import (
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync/models"
+	"encoding/hex",
+	"strconv"
 )
 
-type PoolResponse struct {
-	Address        string  `json:"pool_id"`
-	CertIndex      int32   `json:"cert_index"`
-	VrfKeyHash     []byte  `json:"vrf_key"`
-	Pledge         uint64  `json:"pledge"`
-	RewardAddr     string  `json:"reward_address"`
-	Margin         float32 `json:"variable_fee"`
-	FixedCost      uint64  `json:"fixed_fee"`
-	RegisteredTxId int64   `json:"registered_tx_id"`
+type BlockResponse struct {
+	EpochNumber uint64 `json:"epoch_no"`
+	EpochSlot   uint64 `json:"epoch_slot"`
+	AbsSlot     uint64 `json:"abs_slot"`
+	BlockHeight uint64 `json:"block_height"`
+	BlockHash   string `json:"block_hash"`
+	BlockTime   *time.Time `json:"block_time"`
 }
 
-// Build response object from DB model
-func NewPoolResponse(p *models.PoolUpdate, n string) *PoolResponse {
-	r := &PoolResponse{
-		Address:        n,
-		CertIndex:      p.CertIndex,
-		VrfKeyHash:     p.VrfKeyHash,
-		Pledge:         p.Pledge,
-		RewardAddr:     p.RewardAddr,
-		Margin:         p.Margin,
-		FixedCost:      p.FixedCost,
-		RegisteredTxId: p.RegisteredTxId,
+func NewBlockResponse(b *Block) *BlockResponse {
+	r := &BlockResponse{
+		EpochNumber: strconv.FormatUint(r.EpochNumber, 10),
+		EpochSlot:   strconv.FormatUint(r.EpochSlot, 10),
+		AbsSlot:     strconv.FormatUint(r.AbsSlot, 10),
+		BlockHeight: strconv.FormatUint(r.BlockHeight, 10),
+		BlockHash:   hex.EncodeToString(r.BlockHash),
+		BlockTime:   r.BlockTime,
 	}
 	return r
 }
