@@ -2,7 +2,7 @@ package pool
 
 import (
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/koios/models"
+	// "github.com/cloudstruct/blockchain-query-api/internal/datasource/koios/models"
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/postgres/types"
 	"github.com/gin-gonic/gin"
 	"time"
