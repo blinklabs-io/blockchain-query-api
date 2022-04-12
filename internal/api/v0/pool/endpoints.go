@@ -50,8 +50,8 @@ type Delegator struct {
 type History struct {
 	EpochNumber        uint64  `gorm:"column:epoch_no"`
 	ActiveStake        uint64  `gorm:"column:active_stake"`
-	ActiveStakePercent float32 `gorm:"column:active_stake_pct"`
-	SaturationPercent  float32 `gorm:"column:saturation_pct"`
+	ActiveStakePercent float64 `gorm:"column:active_stake_pct"`
+	SaturationPercent  float64 `gorm:"column:saturation_pct"`
 	BlockCount         uint64  `gorm:"column:block_cnt"`
 	DelegatorCount     uint64  `gorm:"column:delegator_cnt"`
 	Margin             float32 `gorm:"column:margin"`
