@@ -2,7 +2,7 @@ package pool
 
 import (
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync/models"
+	"github.com/cloudstruct/blockchain-query-api/internal/datasource/koios/models"
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/postgres/types"
 	"github.com/gin-gonic/gin"
 	"time"
@@ -177,4 +177,32 @@ func HandleGetPoolBlocks(c *gin.Context) {
 		}
 	}
 	c.JSON(200, r)
+}
+
+func HandleGetPoolDelegators(c *gin.Context) {
+	c.JSON(200, gin.H{})
+}
+
+func HandleGetPoolHistory(c *gin.Context) {
+	c.JSON(200, gin.H{})
+}
+
+func HandleGetPoolInfo(c *gin.Context) {
+	c.JSON(200, gin.H{})
+}
+
+func HandleGetPoolList(c *gin.Context) {
+	c.JSON(200, gin.H{})
+}
+
+func HandleGetPoolMetadata(c *gin.Context) {
+	c.JSON(200, gin.H{})
+}
+
+func HandleGetPoolRelays(c *gin.Context) {
+	c.JSON(200, gin.H{})
+}
+
+func HandleGetPoolUpdates(c *gin.Context) {
+	c.JSON(200, gin.H{})
 }
