@@ -62,20 +62,20 @@ type History struct {
 }
 
 type List struct {
-	PoolIdBech32 string `"gorm:"column:pool_id_bech32"`
-	Ticker       string `"gorm:"column:ticker"`
+	PoolIdBech32 string `gorm:"column:pool_id_bech32"`
+	Ticker       string `gorm:"column:ticker"`
 }
 
 type Metadata struct {
-	PoolIdBech32 string      `"gorm:"column:pool_id_bech32"`
+	PoolIdBech32 string      `gorm:"column:pool_id_bech32"`
 	MetaUrl      string      `gorm:"column:meta_url"`
 	MetaHash     string      `gorm:"column:meta_hash"`
 	MetaJson     types.Jsonb `gorm:"column:meta_json"`
 }
 
 type Pool struct {
-	PoolIdBech32      string      `"gorm:"column:pool_id_bech32"`
-	PoolIdHex         string      `"gorm:"column:pool_id_hex"`
+	PoolIdBech32      string      `gorm:"column:pool_id_bech32"`
+	PoolIdHex         string      `gorm:"column:pool_id_hex"`
 	ActiveEpochNumber int64       `gorm:"column:active_epoch_no"`
 	VrfHashKey        string      `gorm:"column:vrf_hash_key"`
 	Margin            float32     `gorm:"column:margin"`
@@ -92,7 +92,7 @@ type Pool struct {
 	OpCert            string      `gorm:"column:op_cert"`
 	OpCertCounter     uint32      `gorm:"column:op_cert_counter"`
 	ActiveStake       uint64      `gorm:"column:active_stake"`
-	BlockCount        float32     `gorm:"column:block_count"`
+	BlockCount        float64     `gorm:"column:block_count"`
 	LivePledge        float32     `gorm:"column:live_pledge"`
 	LiveStake         uint64      `gorm:"column:live_stake"`
 	LiveDelegators    int64       `gorm:"column:live_delegators"`
@@ -100,7 +100,7 @@ type Pool struct {
 }
 
 type Relays struct {
-	PoolIdBech32 string      `"gorm:"column:pool_id_bech32"`
+	PoolIdBech32 string      `gorm:"column:pool_id_bech32"`
 	Relays       types.Jsonb `gorm:"column:relays"`
 }
 

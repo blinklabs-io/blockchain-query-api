@@ -35,6 +35,32 @@ type HistoryResponse struct {
 	EpochRos           float32 `json:"epoch_ros"`
 }
 
+type InfoResponse struct {
+	PoolIdBech32      string      `json:"pool_id_bech32"`
+	PoolIdHex         string      `json:"pool_id_hex"`
+	ActiveEpochNumber uint64      `json:"active_epoch_no"`
+	VrfHashKey        string      `json:"vrf_hash_key"`
+	Margin            float32     `json:"margin"`
+	FixedCost         string      `json:"fixed_cost"`
+	Pledge            string      `json:"pledge"`
+	RewardAddress     string      `json:"reward_address"`
+	Owners            string      `json:"owners"`
+	Relays            types.Jsonb `json:"relays"`
+	MetaUrl           string      `json:"meta_url"`
+	MetaHash          string      `json:"meta_hash"`
+	MetaJson          types.Jsonb `json:"meta_json"`
+	PoolStatus        string      `json:"pool_status"`
+	RetiringEpoch     uint64      `json:"retiring_epoch"`
+	OpCert            string      `json:"op_cert"`
+	OpCertCounter     uint32      `json:"op_cert_counter"`
+	ActiveStake       string      `json:"active_stake"`
+	BlockCount        float64     `json:"block_count"`
+	LivePledge        string      `json:"live_pledge"`
+	LiveStake         string      `json:"live_stake"`
+	LiveDelegators    uint64      `json:"live_delegators"`
+	LiveSaturation    float32     `json:"live_saturation"`
+}
+
 func NewBlockResponse(b *Block) *BlockResponse {
 	r := &BlockResponse{
 		EpochNumber: b.EpochNumber,
@@ -69,6 +95,35 @@ func NewHistoryResponse(h *History) *HistoryResponse {
 		PoolFees:           strconv.FormatFloat(h.PoolFees, 'f', 2, 32),
 		DelegRewards:       strconv.FormatFloat(h.DelegRewards, 'f', 2, 64),
 		EpochRos:           h.EpochRos,
+	}
+	return r
+}
+
+func NewInfoResponse(p *Pool) *InfoResponse {
+	r := &InfoResponse{
+		PoolIdBech32:      p.PoolIdBech32,
+		PoolIdHex:         p.PoolIdHex,
+		ActiveEpochNumber: p.ActiveEpochNumber,
+		VrfHashKey:        p.VrfHashKey,
+		Margin:            p.Margin,
+		FixedCost:         strconv.FormatUint(p.FixedCost, 10),
+		Pledge:            strconv.FormatUint(p.Pledge, 10),
+		RewardAddress:     p.RewardAddress,
+		Owners:            p.Owners,
+		Relays:            p.Relays,
+		MetaUrl:           p.MetaUrl,
+		MetaHash:          p.MetaHash,
+		MetaJson:          p.MetaJson,
+		PoolStatus:        p.PoolStatus,
+		RetiringEpoch:     p.RetiringEpoch,
+		OpCert:            p.OpCert,
+		OpCertCounter:     p.OpCertCounter,
+		ActiveStake:       strconv.FormatUint(p.ActiveStake, 10),
+		BlockCount:        p.BlockCount,
+		LivePledge:        strconv.FormatFloat(p.LivePledge, 'f', 2, 32),
+		LiveStake:         strconv.FormatUint(p.LiveStake, 10),
+		LiveDelegators:    p.LiveDelegators,
+		LiveSaturation:    p.LiveSaturation,
 	}
 	return r
 }
