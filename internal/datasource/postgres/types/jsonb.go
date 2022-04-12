@@ -1,4 +1,4 @@
-package models
+package types
 
 import (
 	"database/sql/driver"
@@ -6,14 +6,14 @@ import (
 )
 
 // support jsonb column type
-type jsonb map[string]interface{}
+type Jsonb map[string]interface{}
 
-func (j jsonb) Value() (driver.Value, error) {
+func (j Jsonb) Value() (driver.Value, error) {
 	retVal, err := json.Marshal(j)
 	return string(retVal), err
 }
 
-func (j *jsonb) Scan(value interface{}) error {
+func (j *Jsonb) Scan(value interface{}) error {
 	if err := json.Unmarshal(value.([]byte), &j); err != nil {
 		return err
 	}
