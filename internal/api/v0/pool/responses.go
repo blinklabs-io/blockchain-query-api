@@ -14,14 +14,29 @@ type BlockResponse struct {
 	BlockTime   *time.Time `json:"block_time"`
 }
 
+type DelegatorResponse struct {
+	StakeAddress string `json:"stake_address"`
+	Amount       string `json:"amount"`
+	EpochNumber  uint64 `json:"epoch_no"`
+}
+
 func NewBlockResponse(b *Block) *BlockResponse {
 	r := &BlockResponse{
-		EpochNumber: strconv.FormatUint(r.EpochNumber, 10),
-		EpochSlot:   strconv.FormatUint(r.EpochSlot, 10),
-		AbsSlot:     strconv.FormatUint(r.AbsSlot, 10),
-		BlockHeight: strconv.FormatUint(r.BlockHeight, 10),
-		BlockHash:   hex.EncodeToString(r.BlockHash),
-		BlockTime:   r.BlockTime,
+		EpochNumber: b.EpochNumber,
+		EpochSlot:   b.EpochSlot,
+		AbsSlot:     b.AbsSlot,
+		BlockHeight: b.BlockHeight,
+		BlockHash:   hex.EncodeToString(b.BlockHash),
+		BlockTime:   b.BlockTime,
+	}
+	return r
+}
+
+func NewDelegatorResponse(d *Delegator) *DelegatorResponse {
+	r := &DelegatorResponse{
+		StakeAddress: d.StakeAddress,
+		Amount:       strconv.FormatFloat(d.Amount, 'f', 2, 32),
+		EpochNumber:  d.EpochNumber,
 	}
 	return r
 }
