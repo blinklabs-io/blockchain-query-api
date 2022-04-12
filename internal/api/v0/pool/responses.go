@@ -3,6 +3,7 @@ package pool
 import (
 	"encoding/hex"
 	"strconv"
+	"time"
 )
 
 type BlockResponse struct {
@@ -35,7 +36,7 @@ func NewBlockResponse(b *Block) *BlockResponse {
 func NewDelegatorResponse(d *Delegator) *DelegatorResponse {
 	r := &DelegatorResponse{
 		StakeAddress: d.StakeAddress,
-		Amount:       strconv.FormatFloat(d.Amount, 'f', 2, 32),
+		Amount:       strconv.FormatFloat(d.TotalBalance, 'f', 2, 64),
 		EpochNumber:  d.EpochNumber,
 	}
 	return r
