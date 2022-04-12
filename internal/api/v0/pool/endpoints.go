@@ -99,8 +99,8 @@ type Pool struct {
 }
 
 type Relays struct {
-	PoolIdBech32      string  `"gorm:"column:pool_id_bech32"`
-	Relays            jsonb   `gorm:"column:relays"`
+	PoolIdBech32 string `"gorm:"column:pool_id_bech32"`
+	Relays       jsonb  `gorm:"column:relays"`
 }
 
 type Updates struct {
@@ -120,6 +120,61 @@ type Updates struct {
 	MetaHash          string     `gorm:"column:meta_hash"`
 	PoolStatus        string     `gorm:"column:pool_status"`
 	RetiringEpoch     uint64     `gorm:"column:retiring_epoch"`
+}
+
+func HandleGetPoolBlocks(c *gin.Context) {
+	pool := c.DefaultPostForm("_pool_bech32", "")
+	epoch := c.DefaultPostForm("_epoch_no", "NULL")
+
+	db := cardano_db_sync.GetHandle()
+	var blocks []*Block
+	var poolId uint64
+	r := []*BlockResponse{}
+	if pool != "" {
+		// Get database ID of our pool
+		poolIdResult := db.Table("grest.pool_info_cache").
+			Select("pool_hash_id").
+			Where("pool_id_bech32 = ?", pool).
+			Order("tx_id DESC").
+			Limit(1).
+			Find(&poolId)
+		if poolIdResult.Error != nil {
+			// Not found
+			if cardano_db_sync.IsRecordNotFoundError(poolIdResult.Error) {
+				c.JSON(200, r)
+				return
+			}
+			// Some other database error
+			// TODO: log this failure
+			c.JSON(500, gin.H{"msg": "unexpected error"})
+			return
+		}
+		result := db.Debug().
+			Table("block b").
+			Select("b.epoch_no, b.epoch_slot_no as epoch_slot, b.slot_no as abs_slot, b.block_no as block_height, b.hash as block_hash, b.time").
+			Joins("INNER JOIN public.slot_leader AS sl ON b.slot_leader_id = sl.id").
+			Where("sl.pool_hash_id = (?) AND (?)",
+				poolIdResult,
+				db.Raw("? IS NULL OR b.epoch_no = ?",
+					epoch,
+					epoch)).
+			Find(&blocks)
+		if result.Error != nil {
+			// Not found
+			if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+				c.JSON(200, r)
+				return
+			}
+			// Some other database error
+			// TODO: log this failure
+			c.JSON(500, gin.H{"msg": "unexpected error"})
+			return
+		}
+		for _, v := range blocks {
+			r = append(r, NewBlockResponse(v))
+		}
+	}
+	c.JSON(200, r)
 }
 
 // TODO: implement handlers

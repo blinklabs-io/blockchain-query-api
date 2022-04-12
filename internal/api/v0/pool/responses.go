@@ -1,16 +1,16 @@
 package pool
 
 import (
-	"encoding/hex",
+	"encoding/hex"
 	"strconv"
 )
 
 type BlockResponse struct {
-	EpochNumber uint64 `json:"epoch_no"`
-	EpochSlot   uint64 `json:"epoch_slot"`
-	AbsSlot     uint64 `json:"abs_slot"`
-	BlockHeight uint64 `json:"block_height"`
-	BlockHash   string `json:"block_hash"`
+	EpochNumber uint64     `json:"epoch_no"`
+	EpochSlot   uint64     `json:"epoch_slot"`
+	AbsSlot     uint64     `json:"abs_slot"`
+	BlockHeight uint64     `json:"block_height"`
+	BlockHash   string     `json:"block_hash"`
 	BlockTime   *time.Time `json:"block_time"`
 }
 
