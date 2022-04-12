@@ -76,7 +76,7 @@ type Metadata struct {
 type Pool struct {
 	PoolIdBech32      string      `gorm:"column:pool_id_bech32"`
 	PoolIdHex         string      `gorm:"column:pool_id_hex"`
-	ActiveEpochNumber int64       `gorm:"column:active_epoch_no"`
+	ActiveEpochNumber uint64      `gorm:"column:active_epoch_no"`
 	VrfHashKey        string      `gorm:"column:vrf_hash_key"`
 	Margin            float32     `gorm:"column:margin"`
 	FixedCost         uint64      `gorm:"column:fixed_cost"`
@@ -95,8 +95,8 @@ type Pool struct {
 	BlockCount        float64     `gorm:"column:block_count"`
 	LivePledge        float32     `gorm:"column:live_pledge"`
 	LiveStake         uint64      `gorm:"column:live_stake"`
-	LiveDelegators    int64       `gorm:"column:live_delegators"`
-	LiveSaturation    float32     `gorm:"column:live_saturation"`
+	LiveDelegators    uint64      `gorm:"column:live_delegators"`
+	LiveSaturation    float64     `gorm:"column:live_saturation"`
 }
 
 type Relays struct {

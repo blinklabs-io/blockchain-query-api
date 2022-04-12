@@ -2,6 +2,7 @@ package pool
 
 import (
 	"encoding/hex"
+	"github.com/cloudstruct/blockchain-query-api/internal/datasource/postgres/types"
 	"strconv"
 	"time"
 )
@@ -24,15 +25,15 @@ type DelegatorResponse struct {
 type HistoryResponse struct {
 	EpochNumber        uint64  `json:"epoch_no"`
 	ActiveStake        string  `json:"active_stake"`
-	ActiveStakePercent float32 `json:"active_stake_pct"`
-	SaturationPercent  float32 `json:"saturation_pct"`
+	ActiveStakePercent float64 `json:"active_stake_pct"`
+	SaturationPercent  float64 `json:"saturation_pct"`
 	BlockCount         uint64  `json:"block_cnt"`
 	DelegatorCount     uint64  `json:"delegator_cnt"`
 	Margin             float32 `json:"margin"`
 	FixedCost          string  `json:"fixed_cost"`
 	PoolFees           string  `json:"pool_fees"`
 	DelegRewards       string  `json:"deleg_rewards"`
-	EpochRos           float32 `json:"epoch_ros"`
+	EpochRos           float64 `json:"epoch_ros"`
 }
 
 type InfoResponse struct {
@@ -58,7 +59,7 @@ type InfoResponse struct {
 	LivePledge        string      `json:"live_pledge"`
 	LiveStake         string      `json:"live_stake"`
 	LiveDelegators    uint64      `json:"live_delegators"`
-	LiveSaturation    float32     `json:"live_saturation"`
+	LiveSaturation    float64     `json:"live_saturation"`
 }
 
 func NewBlockResponse(b *Block) *BlockResponse {
