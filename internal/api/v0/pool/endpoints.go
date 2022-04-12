@@ -155,6 +155,7 @@ func HandleGetPoolBlocks(c *gin.Context) {
 			Joins("INNER JOIN public.slot_leader AS sl ON b.slot_leader_id = sl.id").
 			Where("sl.pool_hash_id = (?) AND (?)",
 				poolIdResult,
+				// TODO: validate this works as expected
 				db.Raw("? IS NULL OR b.epoch_no = ?",
 					epoch,
 					epoch)).
