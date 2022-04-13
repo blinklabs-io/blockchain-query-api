@@ -93,7 +93,7 @@ func NewHistoryResponse(h *History) *HistoryResponse {
 		DelegatorCount:     h.DelegatorCount,
 		Margin:             h.Margin,
 		FixedCost:          strconv.FormatUint(h.FixedCost, 10),
-		PoolFees:           strconv.FormatFloat(h.PoolFees, 'f', 2, 32),
+		PoolFees:           strconv.FormatFloat(float64(h.PoolFees), 'f', 2, 32),
 		DelegRewards:       strconv.FormatFloat(h.DelegRewards, 'f', 2, 64),
 		EpochRos:           h.EpochRos,
 	}
@@ -121,7 +121,7 @@ func NewInfoResponse(p *Pool) *InfoResponse {
 		OpCertCounter:     p.OpCertCounter,
 		ActiveStake:       strconv.FormatUint(p.ActiveStake, 10),
 		BlockCount:        p.BlockCount,
-		LivePledge:        strconv.FormatFloat(p.LivePledge, 'f', 2, 32),
+		LivePledge:        strconv.FormatFloat(float64(p.LivePledge), 'f', 2, 32),
 		LiveStake:         strconv.FormatUint(p.LiveStake, 10),
 		LiveDelegators:    p.LiveDelegators,
 		LiveSaturation:    p.LiveSaturation,

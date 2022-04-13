@@ -5,6 +5,7 @@ import (
 	// "github.com/cloudstruct/blockchain-query-api/internal/datasource/koios/models"
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/postgres/types"
 	"github.com/gin-gonic/gin"
+	"strconv"
 	"time"
 )
 
@@ -125,7 +126,7 @@ type Updates struct {
 
 func HandleGetPoolBlocks(c *gin.Context) {
 	pool := c.DefaultPostForm("_pool_bech32", "")
-	epoch := c.DefaultPostForm("_epoch_no", "NULL")
+	// epoch := c.DefaultPostForm("_epoch_no", "NULL")
 
 	db := cardano_db_sync.GetHandle()
 	var blocks []*Block
@@ -156,10 +157,8 @@ func HandleGetPoolBlocks(c *gin.Context) {
 			Joins("INNER JOIN public.slot_leader AS sl ON b.slot_leader_id = sl.id").
 			Where("sl.pool_hash_id = (?) AND (?)",
 				poolIdResult,
-				// TODO: validate this works as expected
-				db.Raw("? IS NULL OR b.epoch_no = ?",
-					epoch,
-					epoch)).
+				// TODO: this should also support someone giving an epoch
+				db.Raw("NULL is NULL OR b.epoch_no = NULL")).
 			Find(&blocks)
 		if result.Error != nil {
 			// Not found
@@ -180,7 +179,76 @@ func HandleGetPoolBlocks(c *gin.Context) {
 }
 
 func HandleGetPoolDelegators(c *gin.Context) {
-	c.JSON(200, gin.H{})
+	pool := c.DefaultPostForm("_pool_bech32", "")
+	epoch := c.DefaultPostForm("_epoch_no", "")
+
+	db := cardano_db_sync.GetHandle()
+	var delegators []*Delegator
+	var poolId uint64
+	r := []*DelegatorResponse{}
+	if pool != "" {
+		// Get database ID of our pool
+		poolIdResult := PoolIdQuery(db, pool).Find(&poolId)
+		if poolIdResult.Error != nil {
+			// Not found
+			if cardano_db_sync.IsRecordNotFoundError(poolIdResult.Error) {
+				c.JSON(200, r)
+				return
+			}
+			// Some other database error
+			// TODO: log this failure
+			c.JSON(500, gin.H{"msg": "unexpected error"})
+			return
+		}
+		if epoch == "" {
+			result := db.Debug().
+				Table("grest.stake_distribution_cache AS sdc").
+				Select("stake_address, total_balance, (?)",
+					db.Table("epoch").Select("MAX(no) AS epoch_no")).
+				Where("sdc.pool_id = ?", pool).
+				Order("sdc.total_balance DESC").
+				Find(&delegators)
+			if result.Error != nil {
+				// Not found
+				if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+					c.JSON(200, r)
+					return
+				}
+				// Some other database error
+				// TODO: log this failure
+				c.JSON(500, gin.H{"msg": "unexpected error"})
+				return
+			}
+		} else {
+			epochNum, _ := strconv.ParseInt(epoch, 10, 0)
+			result := db.Debug().
+				Table("public.epoch_stage ES").
+				Select("SA.view AS stake_address, ES.amount AS total_balance, ? AS epoch_no",
+					epoch).
+				Joins("INNER JOIN public.stake_address SA ON ES.addr_id = SA.id").
+				Where("ES.pool_id = ? AND ES.epoch_no = ?",
+					poolIdResult,
+					epochNum).
+				Order("ES.amount DESC").
+				Find(&delegators)
+			if result.Error != nil {
+				// Not found
+				if cardano_db_sync.IsRecordNotFoundError(result.Error) {
+					c.JSON(200, r)
+					return
+				}
+				// Some other database error
+				// TODO: log this failure
+				c.JSON(500, gin.H{"msg": "unexpected error"})
+				return
+			}
+		}
+
+		for _, v := range delegators {
+			r = append(r, NewDelegatorResponse(v))
+		}
+	}
+	c.JSON(200, r)
 }
 
 func HandleGetPoolHistory(c *gin.Context) {
