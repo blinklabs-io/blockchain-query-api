@@ -77,7 +77,7 @@ func NewBlockResponse(b *Block) *BlockResponse {
 func NewDelegatorResponse(d *Delegator) *DelegatorResponse {
 	r := &DelegatorResponse{
 		StakeAddress: d.StakeAddress,
-		Amount:       strconv.FormatFloat(d.TotalBalance, 'f', 2, 64),
+		Amount:       strconv.FormatFloat(d.TotalBalance, 'f', 0, 64),
 		EpochNumber:  d.EpochNumber,
 	}
 	return r
@@ -93,8 +93,8 @@ func NewHistoryResponse(h *History) *HistoryResponse {
 		DelegatorCount:     h.DelegatorCount,
 		Margin:             h.Margin,
 		FixedCost:          strconv.FormatUint(h.FixedCost, 10),
-		PoolFees:           strconv.FormatFloat(float64(h.PoolFees), 'f', 2, 32),
-		DelegRewards:       strconv.FormatFloat(h.DelegRewards, 'f', 2, 64),
+		PoolFees:           strconv.FormatFloat(float64(h.PoolFees), 'f', 0, 32),
+		DelegRewards:       strconv.FormatFloat(h.DelegRewards, 'f', 0, 64),
 		EpochRos:           h.EpochRos,
 	}
 	return r
@@ -121,7 +121,7 @@ func NewInfoResponse(p *Pool) *InfoResponse {
 		OpCertCounter:     p.OpCertCounter,
 		ActiveStake:       strconv.FormatUint(p.ActiveStake, 10),
 		BlockCount:        p.BlockCount,
-		LivePledge:        strconv.FormatFloat(float64(p.LivePledge), 'f', 2, 32),
+		LivePledge:        strconv.FormatFloat(float64(p.LivePledge), 'f', 0, 32),
 		LiveStake:         strconv.FormatUint(p.LiveStake, 10),
 		LiveDelegators:    p.LiveDelegators,
 		LiveSaturation:    p.LiveSaturation,
