@@ -6,7 +6,7 @@ import (
 	// "github.com/cloudstruct/blockchain-query-api/internal/datasource/koios/models"
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/postgres/types"
 	"github.com/gin-gonic/gin"
-	"strconv"
+	// "strconv"
 	"time"
 )
 
@@ -156,7 +156,7 @@ func HandleGetPoolBlocks(c *gin.Context) {
 		if epoch == "" {
 			epoch = "NULL"
 		}
-		result := db.Debug().
+		result := db.
 			Table("block b").
 			Select("b.epoch_no, b.epoch_slot_no as epoch_slot, b.slot_no as abs_slot, b.block_no as block_height, b.hash as block_hash, b.time AS block_time").
 			Joins("INNER JOIN public.slot_leader AS sl ON b.slot_leader_id = sl.id").
@@ -205,7 +205,7 @@ func HandleGetPoolDelegators(c *gin.Context) {
 			return
 		}
 		if epoch == "" {
-			result := db.Debug().
+			result := db.
 				Table("grest.stake_distribution_cache AS sdc").
 				Select("stake_address, total_balance, (?)",
 					db.Table("epoch").Select("MAX(no) AS epoch_no")).
@@ -224,15 +224,13 @@ func HandleGetPoolDelegators(c *gin.Context) {
 				return
 			}
 		} else {
-			epochNum, _ := strconv.ParseInt(epoch, 10, 0)
-			result := db.Debug().
-				Table("public.epoch_stage ES").
-				Select("SA.view AS stake_address, ES.amount AS total_balance, ? AS epoch_no",
-					epoch).
+			result := db.
+				Table("public.epoch_stake ES").
+				Select(fmt.Sprintf("SA.view AS stake_address, ES.amount AS total_balance, %s AS epoch_no",
+					epoch)).
 				Joins("INNER JOIN public.stake_address SA ON ES.addr_id = SA.id").
-				Where("ES.pool_id = ? AND ES.epoch_no = ?",
-					poolIdResult,
-					epochNum).
+				Where(fmt.Sprintf("ES.pool_id = ? AND ES.epoch_no = %s", epoch),
+					poolId).
 				Order("ES.amount DESC").
 				Find(&delegators)
 			if result.Error != nil {
