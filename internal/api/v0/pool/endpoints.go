@@ -1,6 +1,7 @@
 package pool
 
 import (
+	"fmt"
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
 	// "github.com/cloudstruct/blockchain-query-api/internal/datasource/koios/models"
 	"github.com/cloudstruct/blockchain-query-api/internal/datasource/postgres/types"
@@ -126,7 +127,7 @@ type Updates struct {
 
 func HandleGetPoolBlocks(c *gin.Context) {
 	pool := c.DefaultPostForm("_pool_bech32", "")
-	// epoch := c.DefaultPostForm("_epoch_no", "NULL")
+	epoch := c.DefaultPostForm("_epoch_no", "")
 
 	db := cardano_db_sync.GetHandle()
 	var blocks []*Block
@@ -151,14 +152,17 @@ func HandleGetPoolBlocks(c *gin.Context) {
 			c.JSON(500, gin.H{"msg": "unexpected error"})
 			return
 		}
+		// Default to NULL
+		if epoch == "" {
+			epoch = "NULL"
+		}
 		result := db.Debug().
 			Table("block b").
-			Select("b.epoch_no, b.epoch_slot_no as epoch_slot, b.slot_no as abs_slot, b.block_no as block_height, b.hash as block_hash, b.time").
+			Select("b.epoch_no, b.epoch_slot_no as epoch_slot, b.slot_no as abs_slot, b.block_no as block_height, b.hash as block_hash, b.time AS block_time").
 			Joins("INNER JOIN public.slot_leader AS sl ON b.slot_leader_id = sl.id").
 			Where("sl.pool_hash_id = (?) AND (?)",
 				poolIdResult,
-				// TODO: this should also support someone giving an epoch
-				db.Raw("NULL is NULL OR b.epoch_no = NULL")).
+				db.Raw(fmt.Sprintf("%s is NULL OR b.epoch_no = %s", epoch, epoch))).
 			Find(&blocks)
 		if result.Error != nil {
 			// Not found
