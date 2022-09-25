@@ -1,5 +1,7 @@
 # blockchain-query-api
 
+Note: this is experimental and prone to breakage
+
 Service to query blockchain data from `cardano-db-sync`'s database
 
 ## Building
