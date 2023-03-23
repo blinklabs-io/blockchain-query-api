@@ -2,9 +2,9 @@ package main
 
 import (
 	"flag"
-	"github.com/cloudstruct/blockchain-query-api/internal/api"
-	"github.com/cloudstruct/blockchain-query-api/internal/config"
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api"
+	"github.com/blinklabs-io/blockchain-query-api/internal/config"
+	"github.com/blinklabs-io/blockchain-query-api/internal/datasource/cardano_db_sync"
 	"log"
 )
 

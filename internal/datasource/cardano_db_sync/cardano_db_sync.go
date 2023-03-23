@@ -3,7 +3,7 @@ package cardano_db_sync
 import (
 	"errors"
 	"fmt"
-	"github.com/cloudstruct/blockchain-query-api/internal/config"
+	"github.com/blinklabs-io/blockchain-query-api/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

@@ -1,7 +1,7 @@
 package meta
 
 import (
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync/models"
+	"github.com/blinklabs-io/blockchain-query-api/internal/datasource/cardano_db_sync/models"
 	"time"
 )
 

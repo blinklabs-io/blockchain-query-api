@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/postgres/types"
+	"github.com/blinklabs-io/blockchain-query-api/internal/datasource/postgres/types"
 )
 
 type Script struct {

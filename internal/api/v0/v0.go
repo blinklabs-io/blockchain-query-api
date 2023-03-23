@@ -1,12 +1,12 @@
 package v0
 
 import (
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/account"
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/block"
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/epoch"
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/meta"
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/tip"
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v0/totals"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api/v0/account"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api/v0/block"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api/v0/epoch"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api/v0/meta"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api/v0/tip"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api/v0/totals"
 	"github.com/gin-gonic/gin"
 )
 
