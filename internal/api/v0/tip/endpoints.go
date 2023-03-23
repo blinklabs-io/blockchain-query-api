@@ -1,7 +1,7 @@
 package tip
 
 import (
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
+	"github.com/blinklabs-io/blockchain-query-api/internal/datasource/cardano_db_sync"
 	"github.com/gin-gonic/gin"
 	"time"
 )

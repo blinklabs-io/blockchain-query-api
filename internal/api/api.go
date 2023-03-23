@@ -2,8 +2,8 @@ package api
 
 import (
 	"fmt"
-	"github.com/cloudstruct/blockchain-query-api/internal/api/v0"
-	"github.com/cloudstruct/blockchain-query-api/internal/config"
+	"github.com/blinklabs-io/blockchain-query-api/internal/api/v0"
+	"github.com/blinklabs-io/blockchain-query-api/internal/config"
 	"github.com/gin-gonic/gin"
 )
 

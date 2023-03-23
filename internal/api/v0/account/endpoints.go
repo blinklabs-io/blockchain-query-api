@@ -1,8 +1,8 @@
 package account
 
 import (
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync"
-	"github.com/cloudstruct/blockchain-query-api/internal/datasource/cardano_db_sync/models"
+	"github.com/blinklabs-io/blockchain-query-api/internal/datasource/cardano_db_sync"
+	"github.com/blinklabs-io/blockchain-query-api/internal/datasource/cardano_db_sync/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"strconv"
